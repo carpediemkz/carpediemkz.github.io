@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/page/12/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-DP/最长递增子序列" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/18/DP/%E6%9C%80%E9%95%BF%E9%80%92%E5%A2%9E%E5%AD%90%E5%BA%8F%E5%88%97/" class="article-date">
+  <time class="dt-published" datetime="2021-10-18T09:34:20.060Z" itemprop="datePublished">2021-10-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/18/DP/%E6%9C%80%E9%95%BF%E9%80%92%E5%A2%9E%E5%AD%90%E5%BA%8F%E5%88%97/">最长递增子序列</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。</p>
+<p>子序列是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，[3,6,2,7] 是数组 [0,3,1,6,2,2,7] 的子序列。</p>
+<p>单调队列的做法</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">lengthOfLIS</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        tails = []</span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> nums:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> tails <span class="keyword">or</span> num &gt; tails[-<span class="number">1</span>]:</span><br><span class="line">                tails.append(num)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                l, r = <span class="number">0</span>, <span class="built_in">len</span>(tails)-<span class="number">1</span></span><br><span class="line">                <span class="keyword">while</span> l &lt; r:</span><br><span class="line">                    mid = (l + r) &gt;&gt; <span class="number">1</span></span><br><span class="line">                    <span class="keyword">if</span> tails[mid] &lt; num:</span><br><span class="line">                        l = mid + <span class="number">1</span></span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        r = mid</span><br><span class="line">                tails[l] = num</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(tails)</span><br></pre></td></tr></table></figure>
+
+<p>dp的做法</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">lengthOfLIS</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        dp = [<span class="number">1</span> <span class="keyword">for</span> num <span class="keyword">in</span> nums]</span><br><span class="line">        ans = <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(nums)):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, i):</span><br><span class="line">                <span class="keyword">if</span> nums[j] &lt; nums[i]:</span><br><span class="line">                    dp[i] = <span class="built_in">max</span>(dp[i], <span class="number">1</span> + dp[j])</span><br><span class="line">            ans = <span class="built_in">max</span>(ans, dp[i])</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/10/18/DP/%E6%9C%80%E9%95%BF%E9%80%92%E5%A2%9E%E5%AD%90%E5%BA%8F%E5%88%97/" data-id="ckuwgoigh000nk4mebj3og2q2" data-title="最长递增子序列" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-DP/最长公共子序列" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/18/DP/%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97/" class="article-date">
+  <time class="dt-published" datetime="2021-10-18T09:34:20.047Z" itemprop="datePublished">2021-10-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/18/DP/%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97/">最长公共子序列</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+         <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">longestCommonSubsequence</span>(<span class="params">self, text1: <span class="built_in">str</span>, text2: <span class="built_in">str</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">       m = <span class="built_in">len</span>(text1) + <span class="number">1</span></span><br><span class="line">       n = <span class="built_in">len</span>(text2) + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">       dp = [[<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n)] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(m)]</span><br><span class="line">       <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, m):</span><br><span class="line">           <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line">               <span class="keyword">if</span> text1[i-<span class="number">1</span>] == text2[j-<span class="number">1</span>]:</span><br><span class="line">                   dp[i][j] = <span class="number">1</span> + dp[i-<span class="number">1</span>][j-<span class="number">1</span>]</span><br><span class="line">               <span class="keyword">else</span>:</span><br><span class="line">                   dp[i][j] = <span class="built_in">max</span>(dp[i-<span class="number">1</span>][j], dp[i][j-<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> dp[-<span class="number">1</span>][-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/10/18/DP/%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97/" data-id="ckuwgoigj000qk4medu0yg3fc" data-title="最长公共子序列" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-DP/最佳观光组合" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/18/DP/%E6%9C%80%E4%BD%B3%E8%A7%82%E5%85%89%E7%BB%84%E5%90%88/" class="article-date">
+  <time class="dt-published" datetime="2021-10-18T09:34:20.039Z" itemprop="datePublished">2021-10-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/18/DP/%E6%9C%80%E4%BD%B3%E8%A7%82%E5%85%89%E7%BB%84%E5%90%88/">最佳观光组合</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>一边遍历一边更新最优解</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxScoreSightseeingPair</span>(<span class="params">self, values: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        l = <span class="built_in">len</span>(values)</span><br><span class="line">        </span><br><span class="line">        ans, maxi = <span class="built_in">float</span>(<span class="string">&quot;-inf&quot;</span>), values[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, l):</span><br><span class="line">            ans = <span class="built_in">max</span>(ans, maxi +values[i] - i)</span><br><span class="line">            maxi = <span class="built_in">max</span>(maxi, i + values[i])</span><br><span class="line">           </span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/10/18/DP/%E6%9C%80%E4%BD%B3%E8%A7%82%E5%85%89%E7%BB%84%E5%90%88/" data-id="ckuwgoigg000lk4me00iv2rls" data-title="最佳观光组合" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-DP/斐波那契数系列" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/18/DP/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E7%B3%BB%E5%88%97/" class="article-date">
+  <time class="dt-published" datetime="2021-10-18T09:34:20.032Z" itemprop="datePublished">2021-10-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/18/DP/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E7%B3%BB%E5%88%97/">斐波那契数系列</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>斐波那契数，通常用 F(n) 表示，形成的序列称为 斐波那契数列 。该数列由 0 和 1 开始，后面的每一项数字都是前面两项数字的和。也就是：</p>
+<p>F(0) = 0，F(1) = 1<br>F(n) = F(n - 1) + F(n - 2)，其中 n &gt; 1<br>给你 n ，请计算 F(n) 。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fib</span>(<span class="params">self, n: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line"></span><br><span class="line">        a, b = <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> n &gt; <span class="number">0</span>:</span><br><span class="line">            n -= <span class="number">1</span></span><br><span class="line">            a, b = b , a + b</span><br><span class="line">        <span class="keyword">return</span> a</span><br></pre></td></tr></table></figure>
+<p>泰波那契序列 Tn 定义如下： </p>
+<p>T0 = 0, T1 = 1, T2 = 1, 且在 n &gt;= 0 的条件下 Tn+3 = Tn + Tn+1 + Tn+2</p>
+<p>给你整数 n，请返回第 n 个泰波那契数 Tn 的值。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tribonacci</span>(<span class="params">self, n: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        a, b, c = <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> n &gt; <span class="number">0</span>:</span><br><span class="line">            n-=<span class="number">1</span></span><br><span class="line">            a, b, c = b, c, a+b+c</span><br><span class="line">        <span class="keyword">return</span> a</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/10/18/DP/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E7%B3%BB%E5%88%97/" data-id="ckuwgoigg000kk4mehbsn90jn" data-title="斐波那契数系列" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-DP/接雨水" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/18/DP/%E6%8E%A5%E9%9B%A8%E6%B0%B4/" class="article-date">
+  <time class="dt-published" datetime="2021-10-18T09:34:20.025Z" itemprop="datePublished">2021-10-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/18/DP/%E6%8E%A5%E9%9B%A8%E6%B0%B4/">接雨水</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>节约空间的做法</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">trap</span>(<span class="params">self, height: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        length = <span class="built_in">len</span>(height)</span><br><span class="line">        l, r, l_max, r_max= <span class="number">0</span>, <span class="built_in">len</span>(height)-<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">        ans = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> l &lt; r:</span><br><span class="line">            l_max = <span class="built_in">max</span>(l_max, height[l])</span><br><span class="line">            r_max = <span class="built_in">max</span>(r_max, height[r])</span><br><span class="line">            <span class="keyword">if</span> height[l] &lt; height[r]:</span><br><span class="line">                ans += (l_max - height[l])</span><br><span class="line">                l+=<span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                ans += (r_max - height[r])</span><br><span class="line">                r-=<span class="number">1</span>        </span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+<p>dp数组 </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">trap</span>(<span class="params">self, height: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        length = <span class="built_in">len</span>(height)</span><br><span class="line">        l_max, r_max= [<span class="number">0</span>] * length, [<span class="number">0</span>] * length</span><br><span class="line">        l_m, r_m = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i, h <span class="keyword">in</span> <span class="built_in">enumerate</span>(height):</span><br><span class="line">            <span class="keyword">if</span> h &gt; l_m:</span><br><span class="line">                l_m = h</span><br><span class="line">            l_max[i] = l_m</span><br><span class="line">            <span class="keyword">if</span> height[length -<span class="number">1</span> -i] &gt; r_m:</span><br><span class="line">                r_m = height[length -<span class="number">1</span> -i]</span><br><span class="line">            r_max[length -<span class="number">1</span> -i] = r_m</span><br><span class="line">        ans = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, length-<span class="number">1</span>):</span><br><span class="line">            top = <span class="built_in">min</span>(l_max[i], r_max[i])</span><br><span class="line">            <span class="keyword">if</span> top &gt; height[i]:</span><br><span class="line">                ans += top - height[i]</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/10/18/DP/%E6%8E%A5%E9%9B%A8%E6%B0%B4/" data-id="ckuwgoigf000ik4meb7h9c5l7" data-title="接雨水" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-DP/打家劫舍系列" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/18/DP/%E6%89%93%E5%AE%B6%E5%8A%AB%E8%88%8D%E7%B3%BB%E5%88%97/" class="article-date">
+  <time class="dt-published" datetime="2021-10-18T09:34:20.019Z" itemprop="datePublished">2021-10-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/18/DP/%E6%89%93%E5%AE%B6%E5%8A%AB%E8%88%8D%E7%B3%BB%E5%88%97/">打家劫舍系列</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ol start="0">
+<li>给你一个整数数组 nums ，你可以对它进行一些操作。</li>
+</ol>
+<p>每次操作中，选择任意一个 nums[i] ，删除它并获得 nums[i] 的点数。之后，你必须删除 所有 等于 nums[i] - 1 和 nums[i] + 1 的元素。</p>
+<p>开始你拥有 0 个点数。返回你能通过这些操作获得的最大点数。</p>
+<p>这是一个变相打家劫舍</p>
+<ol>
+<li><p>一字房屋</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">rob</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        n = <span class="built_in">len</span>(nums)</span><br><span class="line">        <span class="keyword">if</span> n == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> nums[<span class="number">0</span>]</span><br><span class="line">        dp = [<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n+<span class="number">1</span>)]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n+<span class="number">1</span>):</span><br><span class="line">            dp[i] = <span class="built_in">max</span>(dp[i-<span class="number">1</span>], dp[i-<span class="number">2</span>] + nums[i-<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">return</span> dp[-<span class="number">1</span>]</span><br></pre></td></tr></table></figure></li>
+<li><p>环形房屋<br>不如官解优雅， 建议再看一下</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">rob</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        n = <span class="built_in">len</span>(nums)</span><br><span class="line">        <span class="keyword">if</span> n == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> nums[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> n == <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">max</span>(nums[<span class="number">0</span>], nums[<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">        dp1 = [<span class="number">0</span> <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(n-<span class="number">1</span>)]</span><br><span class="line">        dp1[-<span class="number">1</span>] = nums[-<span class="number">2</span>]</span><br><span class="line">        dp1[-<span class="number">2</span>] = <span class="built_in">max</span>(nums[-<span class="number">2</span>], nums[-<span class="number">3</span>])</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n-<span class="number">4</span>, -<span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">            dp1[i] = <span class="built_in">max</span>(dp1[i+<span class="number">1</span>], nums[i] + dp1[i+<span class="number">2</span>])</span><br><span class="line">        </span><br><span class="line">        dp2 = [<span class="number">0</span> <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(n-<span class="number">1</span>)]</span><br><span class="line">        dp2[-<span class="number">1</span>] = nums[-<span class="number">1</span>]</span><br><span class="line">        dp2[-<span class="number">2</span>] = <span class="built_in">max</span>(nums[-<span class="number">1</span>], nums[-<span class="number">2</span>])</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n-<span class="number">4</span>, -<span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">            dp2[i] = <span class="built_in">max</span>(dp2[i+<span class="number">1</span>], nums[i+<span class="number">1</span>] + dp2[i+<span class="number">2</span>])</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(dp2[<span class="number">0</span>], dp1[<span class="number">0</span>])</span><br></pre></td></tr></table></figure></li>
+<li><p>树状房屋</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">rob</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">dfs</span>(<span class="params">node</span>):</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node:</span><br><span class="line">                <span class="keyword">return</span> [<span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line">            larr = dfs(node.left)</span><br><span class="line">            rarr = dfs(node.right)</span><br><span class="line">            <span class="keyword">return</span> [node.val + larr[<span class="number">1</span>] + rarr[<span class="number">1</span>], <span class="built_in">max</span>(larr[<span class="number">0</span>], larr[<span class="number">1</span>]) + <span class="built_in">max</span>(rarr[<span class="number">0</span>], rarr[<span class="number">1</span>])]</span><br><span class="line">        </span><br><span class="line">        score = dfs(root)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(score[<span class="number">0</span>], score[<span class="number">1</span>])</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/10/18/DP/%E6%89%93%E5%AE%B6%E5%8A%AB%E8%88%8D%E7%B3%BB%E5%88%97/" data-id="ckuwgoige000hk4mefffb6zki" data-title="打家劫舍系列" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-DP/地下城游戏" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/18/DP/%E5%9C%B0%E4%B8%8B%E5%9F%8E%E6%B8%B8%E6%88%8F/" class="article-date">
+  <time class="dt-published" datetime="2021-10-18T09:34:20.011Z" itemprop="datePublished">2021-10-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/18/DP/%E5%9C%B0%E4%B8%8B%E5%9F%8E%E6%B8%B8%E6%88%8F/">地下城游戏</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>一些恶魔抓住了公主（P）并将她关在了地下城的右下角。地下城是由 M x N 个房间组成的二维网格。我们英勇的骑士（K）最初被安置在左上角的房间里，他必须穿过地下城并通过对抗恶魔来拯救公主。</p>
+<p>骑士的初始健康点数为一个正整数。如果他的健康点数在某一时刻降至 0 或以下，他会立即死亡。</p>
+<p>有些房间由恶魔守卫，因此骑士在进入这些房间时会失去健康点数（若房间里的值为负整数，则表示骑士将损失健康点数）；其他房间要么是空的（房间里的值为 0），要么包含增加骑士健康点数的魔法球（若房间里的值为正整数，则表示骑士将增加健康点数）。</p>
+<p>为了尽快到达公主，骑士决定每次只向右或向下移动一步。</p>
+<p> </p>
+<p>编写一个函数来计算确保骑士能够拯救到公主所需的最低初始健康点数。</p>
+<p>例如，考虑到如下布局的地下城，如果骑士遵循最佳路径 右 -&gt; 右 -&gt; 下 -&gt; 下，则骑士的初始健康点数至少为 7。<br>|   |  |   |<br>|  —-  | —-  | —-|<br>|-2 (K)|-3    | 3<br>|-5    |-10|    1|零钱兑换<br>|10    |30    |-5 (P)|
+ </p>
+<p>说明:</p>
+<p>骑士的健康点数没有上限。</p>
+<p>任何房间都可能对骑士的健康点数造成威胁，也可能增加骑士的健康点数，包括骑士进入的左上角房间以及公主被监禁的右下角房间。</p>
+<p>注意dp顺序</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">calculateMinimumHP</span>(<span class="params">self, dungeon: <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        ans = <span class="number">0</span></span><br><span class="line">        m = <span class="built_in">len</span>(dungeon)</span><br><span class="line">        n = <span class="built_in">len</span>(dungeon[<span class="number">0</span>])</span><br><span class="line">        dp = [[<span class="number">0</span> <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(n)] <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(m)]</span><br><span class="line"></span><br><span class="line">        dp[m-<span class="number">1</span>][n-<span class="number">1</span>] = <span class="number">1</span> <span class="keyword">if</span> dungeon[m-<span class="number">1</span>][n-<span class="number">1</span>] &gt; <span class="number">0</span> <span class="keyword">else</span> <span class="number">1</span> - dungeon[m-<span class="number">1</span>][n-<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m-<span class="number">2</span>, -<span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> dungeon[i][n-<span class="number">1</span>] &gt;= <span class="number">0</span>:</span><br><span class="line">                dp[i][n-<span class="number">1</span>] = <span class="built_in">max</span>(dp[i+<span class="number">1</span>][n-<span class="number">1</span>] - dungeon[i][n-<span class="number">1</span>], <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dp[i][n-<span class="number">1</span>] = dp[i+<span class="number">1</span>][n-<span class="number">1</span>] - dungeon[i][n-<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(n-<span class="number">2</span>, -<span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> dungeon[m-<span class="number">1</span>][j] &gt;= <span class="number">0</span>:</span><br><span class="line">                dp[m-<span class="number">1</span>][j] = <span class="built_in">max</span>(dp[m-<span class="number">1</span>][j+<span class="number">1</span>] - dungeon[m-<span class="number">1</span>][j], <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dp[m-<span class="number">1</span>][j] = dp[m-<span class="number">1</span>][j+<span class="number">1</span>] - dungeon[m-<span class="number">1</span>][j]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m-<span class="number">2</span>, -<span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(n-<span class="number">2</span>, -<span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">                <span class="keyword">if</span> dungeon[i][j] &gt;= <span class="number">0</span>:</span><br><span class="line">                    dp[i][j] = <span class="built_in">max</span>(<span class="built_in">min</span>(dp[i+<span class="number">1</span>][j], dp[i][j+<span class="number">1</span>]) - dungeon[i][j], <span class="number">1</span>)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    dp[i][j] = <span class="built_in">min</span>(dp[i+<span class="number">1</span>][j], dp[i][j+<span class="number">1</span>]) - dungeon[i][j]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(dp[<span class="number">0</span>][<span class="number">0</span>], <span class="number">1</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/10/18/DP/%E5%9C%B0%E4%B8%8B%E5%9F%8E%E6%B8%B8%E6%88%8F/" data-id="ckuwgoige000gk4me21htch3j" data-title="地下城游戏" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-DP/单词拆分" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/18/DP/%E5%8D%95%E8%AF%8D%E6%8B%86%E5%88%86/" class="article-date">
+  <time class="dt-published" datetime="2021-10-18T09:34:20.002Z" itemprop="datePublished">2021-10-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/18/DP/%E5%8D%95%E8%AF%8D%E6%8B%86%E5%88%86/">单词拆分</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>给定一个非空字符串 s 和一个包含非空单词的列表 wordDict，判定 s 是否可以被空格拆分为一个或多个在字典中出现的单词。</p>
+<p>说明：</p>
+<p>拆分时可以重复使用字典中的单词。<br>你可以假设字典中没有重复的单词。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wordBreak</span>(<span class="params">self, s: <span class="built_in">str</span>, wordDict: <span class="type">List</span>[<span class="built_in">str</span>]</span>) -&gt; <span class="built_in">bool</span>:</span></span><br><span class="line">        dp = [<span class="literal">False</span> <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(s)+<span class="number">1</span>)]</span><br><span class="line">        dp[<span class="number">0</span>] = <span class="literal">True</span></span><br><span class="line">        max_len = <span class="number">0</span></span><br><span class="line">        wordSet = <span class="built_in">set</span>(wordDict)</span><br><span class="line">        <span class="keyword">for</span> word <span class="keyword">in</span> wordSet:</span><br><span class="line">            max_len = <span class="built_in">max</span>(max_len, <span class="built_in">len</span>(word))</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(s)):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(max_len+<span class="number">1</span>):</span><br><span class="line">                <span class="keyword">if</span> i - j &gt;= <span class="number">0</span>:</span><br><span class="line">                    dp[i+<span class="number">1</span>] = dp[i-j] <span class="keyword">and</span> s[i-j:i+<span class="number">1</span>] <span class="keyword">in</span> wordSet</span><br><span class="line">                    <span class="keyword">if</span> dp[i+<span class="number">1</span>]:</span><br><span class="line">                        <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">return</span> dp[<span class="built_in">len</span>(s)]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>给定一个非空字符串 s 和一个包含非空单词列表的字典 wordDict，在字符串中增加空格来构建一个句子，使得句子中所有的单词都在词典中。返回所有这些可能的句子。</p>
+<p>说明：</p>
+<p>分隔时可以重复使用字典中的单词。<br>你可以假设字典中没有重复的单词。</p>
+<p>一个小的优化剪枝</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wordBreak</span>(<span class="params">self, s: <span class="built_in">str</span>, wordDict: <span class="type">List</span>[<span class="built_in">str</span>]</span>) -&gt; <span class="type">List</span>[<span class="built_in">str</span>]:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">dfs</span>(<span class="params">start</span>):</span></span><br><span class="line">            <span class="keyword">if</span> start &gt;= l:</span><br><span class="line">                anss.append(<span class="string">&quot; &quot;</span>.join(ans))</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(start+<span class="number">1</span>, l+<span class="number">1</span>):</span><br><span class="line">                <span class="keyword">if</span> i - start &gt; maxLen:</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">                sb = s[start:i]</span><br><span class="line">                <span class="keyword">if</span> sb <span class="keyword">in</span> wordset:</span><br><span class="line">                    ans.append(sb)</span><br><span class="line">                    dfs(i)</span><br><span class="line">                    ans.pop()</span><br><span class="line">        ans = []</span><br><span class="line">        anss = []</span><br><span class="line">        l = <span class="built_in">len</span>(s)</span><br><span class="line">        wordset = <span class="built_in">set</span>(wordDict)</span><br><span class="line">        maxLen = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> w <span class="keyword">in</span> wordset:</span><br><span class="line">            maxLen = <span class="built_in">max</span>(maxLen, <span class="built_in">len</span>(w))</span><br><span class="line">        dfs(<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> anss</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/10/18/DP/%E5%8D%95%E8%AF%8D%E6%8B%86%E5%88%86/" data-id="ckuwgoigf000jk4me9vzgdzx0" data-title="单词拆分" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-DP/买卖股票的最佳时机系列" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/18/DP/%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA%E7%B3%BB%E5%88%97/" class="article-date">
+  <time class="dt-published" datetime="2021-10-18T09:34:19.994Z" itemprop="datePublished">2021-10-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/18/DP/%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA%E7%B3%BB%E5%88%97/">买卖股票的最佳时机系列</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>单笔交易<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxProfit</span>(<span class="params">self, prices: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        sell = <span class="number">0</span></span><br><span class="line">        buy = <span class="built_in">float</span>(<span class="string">&quot;-inf&quot;</span>)</span><br><span class="line">        <span class="keyword">for</span> price <span class="keyword">in</span> prices:</span><br><span class="line">            sell = <span class="built_in">max</span>(sell, buy + price)</span><br><span class="line">            buy = <span class="built_in">max</span>(buy, -price)</span><br><span class="line">        <span class="keyword">return</span> sell</span><br></pre></td></tr></table></figure></li>
+<li>无限笔交易<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxProfit</span>(<span class="params">self, prices: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        ans = <span class="number">0</span></span><br><span class="line">        l = <span class="built_in">len</span>(prices)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(l-<span class="number">1</span>):</span><br><span class="line">            ans += <span class="built_in">max</span>(prices[i+<span class="number">1</span>] - prices[i], <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure></li>
+<li>最多2笔交易<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxProfit</span>(<span class="params">self, prices: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        firstbuy, firstsold, secondbuy, secondsold = <span class="built_in">float</span>(<span class="string">&quot;-inf&quot;</span>), <span class="number">0</span>, <span class="built_in">float</span>(<span class="string">&quot;-inf&quot;</span>), <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> price <span class="keyword">in</span> prices:</span><br><span class="line">            firstsold = <span class="built_in">max</span>(firstsold, firstbuy + price)</span><br><span class="line">            firstbuy = <span class="built_in">max</span>(firstbuy, -price)</span><br><span class="line">            secondsold = <span class="built_in">max</span>(secondsold, secondbuy + price)</span><br><span class="line">            secondbuy = <span class="built_in">max</span>(secondbuy, firstsold-price)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(firstsold,secondsold)</span><br></pre></td></tr></table></figure></li>
+<li>最多K笔交易<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxProfit</span>(<span class="params">self, k: <span class="built_in">int</span>, prices: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        <span class="keyword">if</span> k == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        buy = [<span class="built_in">float</span>(<span class="string">&quot;-inf&quot;</span>)] * k</span><br><span class="line">        sell  = [<span class="number">0</span>] * k</span><br><span class="line">        <span class="keyword">for</span> i, price <span class="keyword">in</span> <span class="built_in">enumerate</span>(prices):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(k):</span><br><span class="line">                <span class="keyword">if</span> j == <span class="number">0</span>:</span><br><span class="line">                    sell[j] = <span class="built_in">max</span>(sell[j], buy[j] + price)</span><br><span class="line">                    buy[j] = <span class="built_in">max</span>(-price, buy[j])</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    sell[j] = <span class="built_in">max</span>(sell[j], buy[j] + price)</span><br><span class="line">                    buy[j] = <span class="built_in">max</span>(buy[j], sell[j-<span class="number">1</span>] - price)</span><br><span class="line">        <span class="keyword">return</span> sell[k-<span class="number">1</span>]</span><br></pre></td></tr></table></figure></li>
+<li>含冷冻期<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxProfit</span>(<span class="params">self, prices: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(prices) &lt; <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        hold = -prices[<span class="number">0</span>]   <span class="comment"># 买入</span></span><br><span class="line">        freeze = <span class="number">0</span>          <span class="comment"># 刚刚卖出</span></span><br><span class="line">        canbuy = <span class="number">0</span>          <span class="comment"># 卖出后一天</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(prices)):</span><br><span class="line">            newhold = <span class="built_in">max</span>(hold, canbuy - prices[i])</span><br><span class="line">            newfreeze = hold + prices[i]</span><br><span class="line">            newcanbuy = <span class="built_in">max</span>(freeze, canbuy)</span><br><span class="line">            hold, freeze, canbuy = newhold, newfreeze, newcanbuy</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(freeze, canbuy)</span><br></pre></td></tr></table></figure></li>
+<li>含手续费<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxProfit</span>(<span class="params">self, prices: <span class="type">List</span>[<span class="built_in">int</span>], fee: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        hold = -prices[<span class="number">0</span>]</span><br><span class="line">        sold = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> price <span class="keyword">in</span> prices:</span><br><span class="line">            sold = <span class="built_in">max</span>(sold, hold + price-fee)</span><br><span class="line">            hold = <span class="built_in">max</span>(hold, sold-price)</span><br><span class="line">        <span class="keyword">return</span> sold</span><br></pre></td></tr></table></figure>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/10/18/DP/%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA%E7%B3%BB%E5%88%97/" data-id="ckuwgoigd000fk4medpkth2jh" data-title="买卖股票的最佳时机系列" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-DP/乘积最大子数组" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/18/DP/%E4%B9%98%E7%A7%AF%E6%9C%80%E5%A4%A7%E5%AD%90%E6%95%B0%E7%BB%84/" class="article-date">
+  <time class="dt-published" datetime="2021-10-18T09:34:19.983Z" itemprop="datePublished">2021-10-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/18/DP/%E4%B9%98%E7%A7%AF%E6%9C%80%E5%A4%A7%E5%AD%90%E6%95%B0%E7%BB%84/">乘积最大子数组</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>这种更新方式不用写太多if else， 统一处理即可</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxProduct</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        dpmax = nums[<span class="number">0</span>]</span><br><span class="line">        dpmin = nums[<span class="number">0</span>]</span><br><span class="line">        ans = nums[<span class="number">0</span>]</span><br><span class="line">        l = <span class="built_in">len</span>(nums)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, l):</span><br><span class="line">            recmax, recmin = dpmax, dpmin</span><br><span class="line">            dpmax = <span class="built_in">max</span>(nums[i] * recmax, nums[i] * recmin, nums[i])</span><br><span class="line">            dpmin = <span class="built_in">min</span>(nums[i] * recmax, nums[i] * recmin, nums[i])</span><br><span class="line">            ans = <span class="built_in">max</span>(ans, dpmax)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+<p>这个题目不是求乘积最大， 而是求最长长度（乘积为正）<br>边遍历边更新即可</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getMaxLen</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        l = <span class="built_in">len</span>(nums)</span><br><span class="line">        poslen, navlen = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> nums[<span class="number">0</span>] &gt; <span class="number">0</span>:</span><br><span class="line">            poslen = <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> nums[<span class="number">0</span>] &lt; <span class="number">0</span>:</span><br><span class="line">            navlen = <span class="number">1</span></span><br><span class="line">        ans = poslen</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, l):</span><br><span class="line">            <span class="keyword">if</span> nums[i] &gt; <span class="number">0</span>:</span><br><span class="line">                poslen += <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> navlen &gt; <span class="number">0</span>:</span><br><span class="line">                    navlen += <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> nums[i] &lt; <span class="number">0</span>:</span><br><span class="line">                temp = poslen</span><br><span class="line">                <span class="keyword">if</span> navlen &gt; <span class="number">0</span>:</span><br><span class="line">                    poslen = navlen + <span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    poslen = <span class="number">0</span></span><br><span class="line">                navlen = temp + <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> nums[i] == <span class="number">0</span>:</span><br><span class="line">                poslen, navlen = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">            <span class="comment"># print(poslen)</span></span><br><span class="line">            ans = <span class="built_in">max</span>(ans, poslen)</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/10/18/DP/%E4%B9%98%E7%A7%AF%E6%9C%80%E5%A4%A7%E5%AD%90%E6%95%B0%E7%BB%84/" data-id="ckuwgoigd000ek4me6ypu3c4v" data-title="乘积最大子数组" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/11/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/13/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/10/18/TwoPointer/%E9%A2%9C%E8%89%B2%E5%88%86%E7%B1%BB/">颜色分类</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/18/TwoPointer/%E7%9B%9B%E6%9C%80%E5%A4%9A%E6%B0%B4%E7%9A%84%E5%AE%B9%E5%99%A8/">盛最多水的容器</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/18/TwoPointer/%E6%8E%A5%E9%9B%A8%E6%B0%B4%E5%8F%8C%E6%8C%87%E9%92%88%E8%A7%A3/">接雨水双指针解</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/18/TwoPointer/%E5%88%A0%E9%99%A4%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E9%A1%B9II/">删除有序数组中的重复项II</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/18/TwoPointer/%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C%E7%B3%BB%E5%88%97/">三数之和系列</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
